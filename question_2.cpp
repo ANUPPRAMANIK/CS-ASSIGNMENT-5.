@@ -1,157 +1,71 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
-class arraybubble
+
+void swap(int *a, int *b)   /* function to swap two elements */
 {
-    int size;
-public :
-    void insort()
-    {
-        cout << " Enter the size of array : ";
-        cin >> size;
-        double arr[size];
-        cout <<" Enter the elements of the array : "<<endl;
-        for (int i=0; i<size; i++)
-        {
-           cout<<" data "<<i+1<<" : ";
-           cin>>arr[i];
-        }
-        cout<<" This is the array you have entered : "<<endl;
-        cout<<" { ";
-        for (int i=0; i<size; i++)
-        {
-           cout<<arr[i]<<"   ";
-        }
-        cout<<"}"<<endl;
-        for (int i=0; i<size; i++)
-        {
-            for (int j=0;j<size-1; j++)
-            {
-                 if (arr[j]>arr[j+1])
-                 {
-                     double temp=0;
-                     temp = arr[j];
-                     arr[j]= arr[j+1];
-                     arr[j+1] = temp;
-                 }
-            }
-        }
-        cout<<" This is your array after sorting : "<<endl;
-        cout<<" { ";
-        for (int k=0; k<size; k++)
-        {
-           cout<<arr[k]<<"   ";
-        }
-        cout<<"}";
-    }
-};
-class node
+    int t = *a;        /* create a new variable */
+    *a = *b;        /* 'a' becomes equal to 'b' */
+    *b = t;        /* 'b' becomes equal to 't' */
+}
+
+int partition (int arr[],int low, int high)
 {
-public :
-    double data;
-    node *next;
-};
-class ll_bubble
+    int pivot = arr[high];    /* pivot */
+    int i = (low - 1);  /*creates a new variable */
+    /* implement for loop */
+    for (int j = low; j <= high- 1; j++)
+    {
+        /* If current element is smaller than or
+           equal to pivot */
+        if (arr[j] <= pivot)
+        {
+            i++;      /* increase index of smaller element by one unit */
+            swap(&arr[i], &arr[j]);   /*swap arr[i] and arr[j]*/
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);   /* swap function */
+    return (i + 1);       /*return the index of pivot*/
+}
+
+void qsort(int arr[], int low, int high)
 {
-node *head;
-node *tail;
-public :
-    ll_bubble()
+    if (low < high)
     {
-        head = NULL;
-        tail = NULL;
+        /* pivot is partitioning index, arr[p] is now
+           at right place */
+        int indx = partition(arr, low, high);
+
+        /* Separately sort elements before */
+        /* partition and after partition */
+        qsort(arr, low, indx - 1);
+        qsort(arr, indx + 1, high);
     }
-    void input()
-    {
-        int num;
-        cout<<"\n Enter the number of element you want to insert : ";
-        cin>>num;
-        cout<<" Enter your data : "<<endl;
-        for (int i=0; i<num; i++)
-        {
-            double data;
-            cout<<" data "<<i+1<<" : ";
-            cin>>data;
-            node *temp = new node; //create a new node type object called 'temp'
-            temp->data = data;   //data input is inserted in data part of temp
-            if (head == NULL)   //condition for empty list
-            {
-                head=temp;   //make 'head' and 'temp' same
-                tail=temp;   //make 'tail' and 'temp' same
-                temp->next = NULL;  //points 'next' of temp to null
-            }
-            else    //condition for nonempty list
-            {
-                tail->next = temp;  //points 'next' of tail to temp
-                temp->next = NULL;  //points 'next' pointer of temp to null
-                tail=temp;   //make 'temp' and 'tail' same
-            }
-        }
-    }
-    void display_ll()
-    {
-        node *pos;  //create a new node type pointer called 'pos'
-        pos=head;  //makes the address of 'pos' and 'head' same
-        while (pos != NULL)
-        {
-            cout<<pos->data<<" -> ";  //display the elements
-            pos=pos->next; //goes to next element
-        }
-        cout<<"NULL \n";
-    }
-    void sort_ll()
-    {
-        node *pos;
-        pos = head;
-        while (pos->next != NULL)
-        {
-            node *post;
-            post = head;
-            while (post->next != NULL)
-            {
-              if (post->data > (post->next)->data)
-              {
-                  double temp;
-                  temp = post->data;
-                  post->data = (post->next)->data;
-                  (post->next)->data = temp;
-              }
-              post = post->next;
-            }
-            pos = pos->next;
-        }
-    }
-};
+}
+
+/* Function to print an array */
+void show(int arr[], int size)
+{
+    int i;      /* create a integer type variable */
+    for (i=0; i < size; i++)   /* for loop */
+    { cout << arr[i]<<"    "; }
+}
+
+/* Driver program to test above functions */
 int main()
 {
-    arraybubble ab;
-    ll_bubble llb;
-    int choice;
-    while (choice != 0)
+    int size;
+    cout << " Enter the size of array : ";
+    cin >> size;         /*input for size*/
+    int arr[size];       /*create an array*/
+    cout <<" Enter the elements of the array : "<<endl;
+    for (int i=0; i<size; i++)    /*'for loop' to take input of elements*/
     {
-        cout<<"\n Choose what you want to use for bubble sorting :\n 1. Array     2. Linked list.";
-        cout<<"\n Enter '0' to exit."<<endl<<" Choice : ";
-        cin>>choice;
-        switch (choice)
-        {
-          case 1 :
-            ab.insort();
-            break;
-          case 2 :
-            llb.input();
-            cout<<" These are your data : \n ";
-            llb.display_ll();
-            llb.sort_ll();
-            cout<<" These are your data after sorting : \n ";
-            llb.display_ll();
-            break;
-          case 0 :
-            break;
-          default :
-            cout<<" Enter a valid choice. \n ";
-            break;
-        }
-        cout<<"\n Enter any key and hit 'enter' to do again. \n Enter '0' and hit 'enter to exit."<<endl;
-        cin>>choice;
+        cout<<" data "<<i+1<<" : ";
+        cin>>arr[i];       /*input for data*/
     }
+    show(arr, size);
+    qsort(arr, 0, size-1);    /* calling quicksort function */
+    cout<<"\n Sorted Array : \n";
+    show(arr,size);
 return 0;
 }
